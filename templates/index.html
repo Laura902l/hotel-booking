@@ -1,200 +1,227 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Бронирование отеля</title>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
+
 <body>
 
-<div class="toast-container" id="toastContainer"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
-<header class="site-header">
-    <div class="site-logo">Бронирование отеля</div>
-    <div class="header-nav">
-        <span id="username" style="display:none;"></span>
-        <span id="guestButtons">
-            <button class="btn-o" onclick="registerUser()">Регистрация</button>
-            <button class="btn-d" onclick="login()">Войти</button>
-        </span>
-        <span id="authButtons" style="display:none;">
-            <button class="btn-o" onclick="loadMyBookings()">Мои брони</button>
-            <button class="btn-o" onclick="logout()">Выйти</button>
-        </span>
-    </div>
-</header>
-
-<div class="wrap">
-    <div class="panel">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label>Макс. цена</label>
-                <input type="number" id="filterPrice" placeholder="₽ за сутки">
-            </div>
-            <div class="col-md-3">
-                <label>Мест</label>
-                <input type="number" id="filterCapacity" placeholder="Гостей">
-            </div>
-            <div class="col-md-3">
-                <label>Сортировка</label>
-                <select id="sortBy">
-                    <option value="">Без сортировки</option>
-                    <option value="price_per_day">Цена ↑</option>
-                    <option value="-price_per_day">Цена ↓</option>
-                    <option value="capacity">Места ↑</option>
-                    <option value="-capacity">Места ↓</option>
-                </select>
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button class="btn-d w-100" onclick="applyFilters()">Применить</button>
-            </div>
+    <header class="site-header">
+        <div class="site-logo">Бронирование отеля</div>
+        <div class="header-nav">
+            <span id="username" style="display:none;"></span>
+            <span id="guestButtons">
+                <button class="btn-o" onclick="registerUser()">Регистрация</button>
+                <button class="btn-d" onclick="login()">Войти</button>
+            </span>
+            <span id="authButtons" style="display:none;">
+                <button class="btn-o" onclick="loadMyBookings()">Мои брони</button>
+                <button class="btn-o" onclick="logout()">Выйти</button>
+            </span>
         </div>
+    </header>
 
-        <div class="panel-divider"></div>
-
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label>Заезд</label>
-                <input type="date" id="dateFrom">
-            </div>
-            <div class="col-md-3">
-                <label>Выезд</label>
-                <input type="date" id="dateTo">
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button class="btn-blue w-100" onclick="loadAvailable()">Найти свободные</button>
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button class="btn-o w-100" onclick="loadRooms()">Все номера</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="slabel mt-4">Номера</div>
-    <div id="rooms"></div>
-
-    <div class="slabel mt-4">Мои бронирования</div>
-    <div id="bookings"></div>
-</div>
-
-<div class="modal fade" id="bookingModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="modal-title-c">Бронирование</div>
-                <div class="modal-room-name" id="modalRoomName"></div>
-
-                <div class="busy-dates-block" id="busyDatesBlock">
-                    <div class="busy-dates-title">Занятые даты</div>
-                    <div id="busyDatesList"><div class="busy-dates-empty">Загрузка...</div></div>
+    <div class="wrap">
+        <div class="panel">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label>Макс. цена</label>
+                    <input type="number" id="filterPrice" placeholder="₽ за сутки">
                 </div>
-
-                <label>Дата заезда</label>
-                <input type="date" id="bookFrom" oninput="updatePriceSummary()">
-
-                <label>Дата выезда</label>
-                <input type="date" id="bookTo" oninput="updatePriceSummary()">
-
-                <div class="price-summary" id="priceSummary" style="display:none;">
-                    <span class="price-summary-label" id="priceSummaryLabel">Итого</span>
-                    <span class="price-summary-value" id="priceSummaryValue"></span>
+                <div class="col-md-3">
+                    <label>Мест</label>
+                    <input type="number" id="filterCapacity" placeholder="Гостей">
                 </div>
+                <div class="col-md-3">
+                    <label>Сортировка</label>
+                    <select id="sortBy">
+                        <option value="">Без сортировки</option>
+                        <option value="price_per_day">Цена ↑</option>
+                        <option value="-price_per_day">Цена ↓</option>
+                        <option value="capacity">Места ↑</option>
+                        <option value="-capacity">Места ↓</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn-d w-100" onclick="applyFilters()">Применить</button>
+                </div>
+            </div>
 
-                <button class="btn-blue w-100 mt-3" onclick="confirmBooking()" id="confirmBtn">Подтвердить бронь</button>
+            <div class="panel-divider"></div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label>Заезд</label>
+                    <input type="date" id="dateFrom">
+                </div>
+                <div class="col-md-3">
+                    <label>Выезд</label>
+                    <input type="date" id="dateTo">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn-blue w-100" onclick="loadAvailable()">Найти свободные</button>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn-o w-100" onclick="loadRooms()">Все номера</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="slabel mt-4">Номера</div>
+        <div id="rooms"></div>
+
+        <div class="slabel mt-4">Мои бронирования</div>
+        <div id="bookings"></div>
+    </div>
+
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title-c">Бронирование</div>
+                    <div class="modal-room-name" id="modalRoomName"></div>
+
+                    <div class="busy-dates-block" id="busyDatesBlock">
+                        <div class="busy-dates-title">Занятые даты</div>
+                        <div id="busyDatesList">
+                            <div class="busy-dates-empty">Загрузка...</div>
+                        </div>
+                    </div>
+
+                    <label>Дата заезда</label>
+                    <input type="date" id="bookFrom" oninput="updatePriceSummary()">
+
+                    <label>Дата выезда</label>
+                    <input type="date" id="bookTo" oninput="updatePriceSummary()">
+
+                    <div class="price-summary" id="priceSummary" style="display:none;">
+                        <span class="price-summary-label" id="priceSummaryLabel">Итого</span>
+                        <span class="price-summary-value" id="priceSummaryValue"></span>
+                    </div>
+
+                    <button class="btn-blue w-100 mt-3" onclick="confirmBooking()" id="confirmBtn">Подтвердить
+                        бронь</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="authModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 360px;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="modal-title-c" id="authTitle">Войти</div>
-                <div style="margin-bottom: 16px;"></div>
-                <label>Логин</label>
-                <input type="text" id="authUsername" autocomplete="username" placeholder="Имя пользователя">
-                <label>Пароль</label>
-                <input type="password" id="authPassword" autocomplete="current-password" placeholder="••••••••">
-                <button class="btn-d w-100 mt-3" id="authSubmitBtn" onclick="submitAuth()">Войти</button>
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 360px;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title-c" id="authTitle">Войти</div>
+                    <div style="margin-bottom: 16px;"></div>
+                    <label>Логин</label>
+                    <input type="text" id="authUsername" autocomplete="username" placeholder="Имя пользователя">
+                    <label>Пароль</label>
+                    <input type="password" id="authPassword" autocomplete="current-password" placeholder="••••••••">
+                    <button class="btn-d w-100 mt-3" id="authSubmitBtn" onclick="submitAuth()">Войти</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    let selectedRoom = null;
-    let selectedRoomPrice = 0;
-    let authMode = "login";
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedRoom = null;
+        let selectedRoomPrice = 0;
+        let authMode = "login";
 
-    function showToast(msg, type = "default") {
-        const el = document.createElement("div");
-        el.className = "toast-item " + type;
-        el.textContent = msg;
-        document.getElementById("toastContainer").appendChild(el);
-        setTimeout(() => {
-            el.style.opacity = "0";
-            el.style.transition = "opacity 0.3s";
-            setTimeout(() => el.remove(), 300);
-        }, 3000);
-    }
-
-    async function loadUser() {
-        const token = localStorage.getItem("access");
-        if (!token) return;
-        const r = await fetch("/api/users/me/", { headers: { "Authorization": "Bearer " + token } });
-        if (r.ok) {
-            const data = await r.json();
-            const el = document.getElementById("username");
-            el.style.display = "inline-block";
-            el.innerText = data.username;
+        function showToast(msg, type = "default") {
+            const el = document.createElement("div");
+            el.className = "toast-item " + type;
+            el.textContent = msg;
+            document.getElementById("toastContainer").appendChild(el);
+            setTimeout(() => {
+                el.style.opacity = "0";
+                el.style.transition = "opacity 0.3s";
+                setTimeout(() => el.remove(), 300);
+            }, 3000);
         }
-    }
 
-    function updateUI() {
-        const token = localStorage.getItem("access");
-        document.getElementById("guestButtons").style.display = token ? "none" : "inline-flex";
-        document.getElementById("authButtons").style.display = token ? "inline-flex" : "none";
-        if (token) loadUser();
-    }
-
-    async function loadRooms() {
-        const r = await fetch("/api/rooms/");
-        renderRooms(await r.json());
-    }
-
-    async function loadAvailable() {
-        const from = document.getElementById("dateFrom").value;
-        const to = document.getElementById("dateTo").value;
-        if (!from || !to) { showToast("Выберите даты заезда и выезда", "error"); return; }
-        const r = await fetch(`/api/rooms/available/?date_from=${from}&date_to=${to}`);
-        renderRooms(await r.json());
-    }
-
-    async function applyFilters() {
-        const price = document.getElementById("filterPrice").value;
-        const capacity = document.getElementById("filterCapacity").value;
-        const ordering = document.getElementById("sortBy").value;
-        let url = "/api/rooms/?";
-        if (price) url += `price_per_day=${price}&`;
-        if (capacity) url += `capacity=${capacity}&`;
-        if (ordering) url += `ordering=${ordering}`;
-        renderRooms(await (await fetch(url)).json());
-    }
-
-    function renderRooms(rooms) {
-        const c = document.getElementById("rooms");
-        c.innerHTML = "";
-        if (!rooms.length) {
-            c.innerHTML = `<div class="empty">Номера не найдены</div>`;
-            return;
+        async function loadUser() {
+            const token = localStorage.getItem("access");
+            if (!token) return;
+            const r = await fetch("/api/users/me/", { headers: { "Authorization": "Bearer " + token } });
+            if (r.ok) {
+                const data = await r.json();
+                const el = document.getElementById("username");
+                el.style.display = "inline-block";
+                el.innerText = data.username;
+            }
         }
-        rooms.forEach((room, i) => {
-            c.innerHTML += `
+
+        async function updateUI() {
+            const token = localStorage.getItem("access");
+
+            if (!token) {
+                document.getElementById("guestButtons").style.display = "inline-flex";
+                document.getElementById("authButtons").style.display = "none";
+                return;
+            }
+
+            const r = await fetch("/api/users/me/", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            if (r.ok) {
+                const data = await r.json();
+                document.getElementById("username").style.display = "inline-block";
+                document.getElementById("username").innerText = data.username;
+
+                document.getElementById("guestButtons").style.display = "none";
+                document.getElementById("authButtons").style.display = "inline-flex";
+            } else {
+                localStorage.removeItem("access");
+                document.getElementById("guestButtons").style.display = "inline-flex";
+                document.getElementById("authButtons").style.display = "none";
+            }
+        }
+
+        async function loadRooms() {
+            const r = await fetch("/api/rooms/");
+            renderRooms(await r.json());
+        }
+
+        async function loadAvailable() {
+            const from = document.getElementById("dateFrom").value;
+            const to = document.getElementById("dateTo").value;
+            if (!from || !to) { showToast("Выберите даты заезда и выезда", "error"); return; }
+            const r = await fetch(`/api/rooms/available/?date_from=${from}&date_to=${to}`);
+            renderRooms(await r.json());
+        }
+
+        async function applyFilters() {
+            const price = document.getElementById("filterPrice").value;
+            const capacity = document.getElementById("filterCapacity").value;
+            const ordering = document.getElementById("sortBy").value;
+            let url = "/api/rooms/?";
+            if (price) url += `price_per_day=${price}&`;
+            if (capacity) url += `capacity=${capacity}&`;
+            if (ordering) url += `ordering=${ordering}`;
+            renderRooms(await (await fetch(url)).json());
+        }
+
+        function renderRooms(rooms) {
+            const c = document.getElementById("rooms");
+            c.innerHTML = "";
+            if (!rooms.length) {
+                c.innerHTML = `<div class="empty">Номера не найдены</div>`;
+                return;
+            }
+            rooms.forEach((room, i) => {
+                c.innerHTML += `
             <div class="room-row fade-in" style="animation-delay:${i * 0.04}s">
                 <div>
                     <div class="room-name">${room.name}</div>
@@ -208,105 +235,105 @@
                     <button class="btn-o" onclick="openBooking(${room.id}, '${room.name}', ${room.price_per_day})">Забронировать</button>
                 </div>
             </div>`;
-        });
-    }
-
-    async function openBooking(id, name, price) {
-        selectedRoom = id;
-        selectedRoomPrice = parseFloat(price);
-
-        document.getElementById("modalRoomName").textContent = name;
-        document.getElementById("bookFrom").value = "";
-        document.getElementById("bookTo").value = "";
-        document.getElementById("priceSummary").style.display = "none";
-        document.getElementById("busyDatesList").innerHTML = '<div class="busy-dates-empty">Загрузка...</div>';
-
-        new bootstrap.Modal(document.getElementById('bookingModal')).show();
-
-        const token = localStorage.getItem("access");
-        const r = await fetch(`/api/rooms/${id}/bookings/`, {
-            headers: { "Authorization": "Bearer " + token }
-        });
-        const bookings = await r.json();
-        const listEl = document.getElementById("busyDatesList");
-
-        if (!bookings.length) {
-            listEl.innerHTML = '<div class="busy-dates-empty">Нет занятых дат — номер свободен</div>';
-        } else {
-            listEl.innerHTML = bookings.map(b =>
-                `<span class="busy-date-pill">${formatDate(b.date_from)} — ${formatDate(b.date_to)}</span>`
-            ).join("");
+            });
         }
-    }
 
-    function formatDate(str) {
-        if (!str) return str;
-        const [y, m, d] = str.split("-");
-        return `${d}.${m}.${y}`;
-    }
+        async function openBooking(id, name, price) {
+            selectedRoom = id;
+            selectedRoomPrice = parseFloat(price);
 
-    function updatePriceSummary() {
-        const from = document.getElementById("bookFrom").value;
-        const to = document.getElementById("bookTo").value;
-        const summaryEl = document.getElementById("priceSummary");
-        if (!from || !to) { summaryEl.style.display = "none"; return; }
-        const diff = (new Date(to) - new Date(from)) / 86400000;
-        if (diff <= 0) { summaryEl.style.display = "none"; return; }
-        const total = diff * selectedRoomPrice;
-        document.getElementById("priceSummaryLabel").textContent = `${diff} ${nights(diff)}`;
-        document.getElementById("priceSummaryValue").textContent = Number(total).toLocaleString('ru') + " ₽";
-        summaryEl.style.display = "flex";
-    }
+            document.getElementById("modalRoomName").textContent = name;
+            document.getElementById("bookFrom").value = "";
+            document.getElementById("bookTo").value = "";
+            document.getElementById("priceSummary").style.display = "none";
+            document.getElementById("busyDatesList").innerHTML = '<div class="busy-dates-empty">Загрузка...</div>';
 
-    function nights(n) {
-        if (n % 10 === 1 && n % 100 !== 11) return "ночь";
-        if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return "ночи";
-        return "ночей";
-    }
+            new bootstrap.Modal(document.getElementById('bookingModal')).show();
 
-    async function confirmBooking() {
-        const token = localStorage.getItem("access");
-        if (!token) { showToast("Необходимо войти в систему", "error"); return; }
-        const from = document.getElementById("bookFrom").value;
-        const to = document.getElementById("bookTo").value;
-        if (!from || !to) { showToast("Укажите даты заезда и выезда", "error"); return; }
+            const token = localStorage.getItem("access");
+            const r = await fetch(`/api/rooms/${id}/bookings/`, {
+                headers: { "Authorization": "Bearer " + token }
+            });
+            const bookings = await r.json();
+            const listEl = document.getElementById("busyDatesList");
 
-        const btn = document.getElementById("confirmBtn");
-        btn.disabled = true;
-        btn.textContent = "Оформляем...";
-
-        const r = await fetch("/api/bookings/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-            body: JSON.stringify({ room: selectedRoom, date_from: from, date_to: to })
-        });
-
-        btn.disabled = false;
-        btn.textContent = "Подтвердить бронь";
-
-        if (r.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
-            showToast("Бронирование оформлено!", "success");
-            loadMyBookings();
-        } else {
-            const err = await r.json();
-            const msg = Object.values(err).flat().join(". ");
-            showToast("Ошибка: " + msg, "error");
+            if (!bookings.length) {
+                listEl.innerHTML = '<div class="busy-dates-empty">Нет занятых дат — номер свободен</div>';
+            } else {
+                listEl.innerHTML = bookings.map(b =>
+                    `<span class="busy-date-pill">${formatDate(b.date_from)} — ${formatDate(b.date_to)}</span>`
+                ).join("");
+            }
         }
-    }
 
-    async function loadMyBookings() {
-        const token = localStorage.getItem("access");
-        if (!token) { showToast("Необходимо войти", "error"); return; }
-        const data = await (await fetch("/api/bookings/", { headers: { "Authorization": "Bearer " + token } })).json();
-        const c = document.getElementById("bookings");
-        c.innerHTML = "";
-        if (!data.length) { c.innerHTML = `<div class="empty">Бронирований пока нет</div>`; return; }
-        data.forEach((b, i) => {
-            const action = b.status === "active"
-                ? `<button class="btn-sm-red" onclick="cancelBooking(${b.id})">Отменить</button>`
-                : `<span class="badge-cancelled">Отменена</span>`;
-            c.innerHTML += `
+        function formatDate(str) {
+            if (!str) return str;
+            const [y, m, d] = str.split("-");
+            return `${d}.${m}.${y}`;
+        }
+
+        function updatePriceSummary() {
+            const from = document.getElementById("bookFrom").value;
+            const to = document.getElementById("bookTo").value;
+            const summaryEl = document.getElementById("priceSummary");
+            if (!from || !to) { summaryEl.style.display = "none"; return; }
+            const diff = (new Date(to) - new Date(from)) / 86400000;
+            if (diff <= 0) { summaryEl.style.display = "none"; return; }
+            const total = diff * selectedRoomPrice;
+            document.getElementById("priceSummaryLabel").textContent = `${diff} ${nights(diff)}`;
+            document.getElementById("priceSummaryValue").textContent = Number(total).toLocaleString('ru') + " ₽";
+            summaryEl.style.display = "flex";
+        }
+
+        function nights(n) {
+            if (n % 10 === 1 && n % 100 !== 11) return "ночь";
+            if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return "ночи";
+            return "ночей";
+        }
+
+        async function confirmBooking() {
+            const token = localStorage.getItem("access");
+            if (!token) { showToast("Необходимо войти в систему", "error"); return; }
+            const from = document.getElementById("bookFrom").value;
+            const to = document.getElementById("bookTo").value;
+            if (!from || !to) { showToast("Укажите даты заезда и выезда", "error"); return; }
+
+            const btn = document.getElementById("confirmBtn");
+            btn.disabled = true;
+            btn.textContent = "Оформляем...";
+
+            const r = await fetch("/api/bookings/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+                body: JSON.stringify({ room: selectedRoom, date_from: from, date_to: to })
+            });
+
+            btn.disabled = false;
+            btn.textContent = "Подтвердить бронь";
+
+            if (r.ok) {
+                bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
+                showToast("Бронирование оформлено!", "success");
+                loadMyBookings();
+            } else {
+                const err = await r.json();
+                const msg = Object.values(err).flat().join(". ");
+                showToast("Ошибка: " + msg, "error");
+            }
+        }
+
+        async function loadMyBookings() {
+            const token = localStorage.getItem("access");
+            if (!token) { showToast("Необходимо войти", "error"); return; }
+            const data = await (await fetch("/api/bookings/", { headers: { "Authorization": "Bearer " + token } })).json();
+            const c = document.getElementById("bookings");
+            c.innerHTML = "";
+            if (!data.length) { c.innerHTML = `<div class="empty">Бронирований пока нет</div>`; return; }
+            data.forEach((b, i) => {
+                const action = b.status === "active"
+                    ? `<button class="btn-sm-red" onclick="cancelBooking(${b.id})">Отменить</button>`
+                    : `<span class="badge-cancelled">Отменена</span>`;
+                c.innerHTML += `
             <div class="booking-row fade-in" style="animation-delay:${i * 0.04}s">
                 <div>
                     <div class="booking-room">${b.room_name}</div>
@@ -314,93 +341,94 @@
                 </div>
                 ${action}
             </div>`;
-        });
-    }
-
-    async function cancelBooking(id) {
-        const token = localStorage.getItem("access");
-        await fetch(`/api/bookings/${id}/cancel/`, { method: "POST", headers: { "Authorization": "Bearer " + token } });
-        showToast("Бронирование отменено");
-        loadMyBookings();
-    }
-
-    function registerUser() {
-        authMode = "register";
-        document.getElementById("authTitle").textContent = "Регистрация";
-        document.getElementById("authSubmitBtn").textContent = "Создать аккаунт";
-        document.getElementById("authUsername").value = "";
-        document.getElementById("authPassword").value = "";
-        new bootstrap.Modal(document.getElementById('authModal')).show();
-    }
-
-    function login() {
-        authMode = "login";
-        document.getElementById("authTitle").textContent = "Войти";
-        document.getElementById("authSubmitBtn").textContent = "Войти";
-        document.getElementById("authUsername").value = "";
-        document.getElementById("authPassword").value = "";
-        new bootstrap.Modal(document.getElementById('authModal')).show();
-    }
-
-    async function submitAuth() {
-        const username = document.getElementById("authUsername").value.trim();
-        const password = document.getElementById("authPassword").value;
-
-        if (!username || !password) { showToast("Заполните все поля", "error"); return; }
-
-        const btn = document.getElementById("authSubmitBtn");
-        btn.disabled = true;
-
-        if (authMode === "register") {
-            const r = await fetch("/api/register/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
             });
-            btn.disabled = false;
-            if (r.ok) {
-                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
-                showToast("Регистрация завершена! Теперь войдите.", "success");
+        }
+
+        async function cancelBooking(id) {
+            const token = localStorage.getItem("access");
+            await fetch(`/api/bookings/${id}/cancel/`, { method: "POST", headers: { "Authorization": "Bearer " + token } });
+            showToast("Бронирование отменено");
+            loadMyBookings();
+        }
+
+        function registerUser() {
+            authMode = "register";
+            document.getElementById("authTitle").textContent = "Регистрация";
+            document.getElementById("authSubmitBtn").textContent = "Создать аккаунт";
+            document.getElementById("authUsername").value = "";
+            document.getElementById("authPassword").value = "";
+            new bootstrap.Modal(document.getElementById('authModal')).show();
+        }
+
+        function login() {
+            authMode = "login";
+            document.getElementById("authTitle").textContent = "Войти";
+            document.getElementById("authSubmitBtn").textContent = "Войти";
+            document.getElementById("authUsername").value = "";
+            document.getElementById("authPassword").value = "";
+            new bootstrap.Modal(document.getElementById('authModal')).show();
+        }
+
+        async function submitAuth() {
+            const username = document.getElementById("authUsername").value.trim();
+            const password = document.getElementById("authPassword").value;
+
+            if (!username || !password) { showToast("Заполните все поля", "error"); return; }
+
+            const btn = document.getElementById("authSubmitBtn");
+            btn.disabled = true;
+
+            if (authMode === "register") {
+                const r = await fetch("/api/register/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+                btn.disabled = false;
+                if (r.ok) {
+                    bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+                    showToast("Регистрация завершена! Теперь войдите.", "success");
+                } else {
+                    showToast("Ошибка регистрации", "error");
+                }
             } else {
-                showToast("Ошибка регистрации", "error");
-            }
-        } else {
-            const data = await (await fetch("/api/token/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
-            })).json();
-            btn.disabled = false;
-            if (data.access) {
-                localStorage.setItem("access", data.access);
-                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
-                showToast("Добро пожаловать, " + username + "!", "success");
-                updateUI();
-                loadMyBookings();
-            } else {
-                showToast("Неверный логин или пароль", "error");
+                const data = await (await fetch("/api/token/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                })).json();
+                btn.disabled = false;
+                if (data.access) {
+                    localStorage.setItem("access", data.access);
+                    bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+                    showToast("Добро пожаловать, " + username + "!", "success");
+                    updateUI();
+                    loadMyBookings();
+                } else {
+                    showToast("Неверный логин или пароль", "error");
+                }
             }
         }
-    }
 
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            const modal = document.getElementById("authModal");
-            if (modal.classList.contains("show")) submitAuth();
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const modal = document.getElementById("authModal");
+                if (modal.classList.contains("show")) submitAuth();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("access");
+            document.getElementById("username").style.display = "none";
+            document.getElementById("bookings").innerHTML = "";
+            showToast("Вы вышли из аккаунта");
+            updateUI();
         }
-    });
 
-    function logout() {
-        localStorage.removeItem("access");
-        document.getElementById("username").style.display = "none";
-        document.getElementById("bookings").innerHTML = "";
-        showToast("Вы вышли из аккаунта");
         updateUI();
-    }
-
-    updateUI();
-    loadRooms();
-    if (localStorage.getItem("access")) loadMyBookings();
-</script>
+        loadRooms();
+        if (localStorage.getItem("access")) loadMyBookings();
+    </script>
 </body>
+
 </html>
